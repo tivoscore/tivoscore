@@ -1,20 +1,23 @@
 import streamlit as st
-from PIL import Image  # <--- Importas la librería
+from PIL import Image
 
-# Cargar la imagen (asegúrate de que el nombre coincida)
+# ============================================================
+# CONFIGURACIÓN DE PÁGINA
+# ============================================================
 icono = Image.open("favicon.png")
-
 st.set_page_config(
     page_title="TivoScore — Sistema de Control Operativo",
-    page_icon=icono,   # <--- Aquí pones la variable, sin comillas
-    layout="centered"
+    page_icon=icono,
+    layout="centered",
 )
+
 # ============================================================
-# ESTILO GLOBAL — tipografía y paleta
+# ESTILOS GLOBALES
 # ============================================================
 st.markdown("""
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+
 <style>
 :root {
     --ink: #16233A;
@@ -28,7 +31,8 @@ st.markdown("""
     --text: #1C1F26;
     --text-soft: #5B6472;
 }
-html, body, [class*="css"]  {
+
+html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
     color: var(--text);
 }
@@ -129,7 +133,7 @@ h1, h2, h3, .display {
     color: #7C8AA0;
 }
 
-/* --- ledger comparativo --- */
+/* --- ledger --- */
 .ledger {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -167,7 +171,7 @@ h1, h2, h3, .display {
 .step h5 { margin: 0 0 0.25rem 0; font-size: 1rem; font-weight: 600; }
 .step p { margin: 0; font-size: 0.92rem; color: var(--text-soft); line-height: 1.5; }
 
-/* --- piloto honesto --- */
+/* --- piloto --- */
 .piloto-box {
     background: var(--paper-alt);
     border-left: 3px solid var(--amber);
@@ -179,7 +183,7 @@ h1, h2, h3, .display {
 .piloto-box ul { margin: 0.5rem 0 0 0; padding-left: 1.2rem; font-size: 0.92rem; color: var(--text-soft); }
 .piloto-box ul li { margin-bottom: 0.3rem; }
 
-/* --- cta final --- */
+/* --- cta --- */
 .cta-final {
     background: var(--ink);
     border-radius: 14px;
@@ -189,7 +193,6 @@ h1, h2, h3, .display {
 }
 .cta-final h3 { color: #F6F3EC; margin: 0 0 0.5rem 0; font-size: 1.5rem; }
 .cta-final p { color: #B9C2D0; font-size: 0.94rem; margin: 0 0 0.8rem 0; }
-.cta-final .disclaimer { font-size: 0.78rem; color: #7C8AA0; margin-top: 0.6rem; }
 
 .section-label {
     font-family: 'IBM Plex Mono', monospace;
@@ -212,12 +215,31 @@ div.stButton > button {
 }
 div.stButton > button:hover { background: var(--amber-dark) !important; color: #F6F3EC !important; }
 
-/* --- beneficios (icono SVG gris, no emoji) --- */
-.benefits-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 0.5rem 0 2rem 0; }
-.benefits-grid .benefit { background: var(--paper-alt); border-radius: 8px; padding: 1.1rem 1.2rem; text-align: center; }
+/* --- beneficios --- */
+.benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 0.5rem 0 2rem 0;
+}
+.benefits-grid .benefit {
+    background: var(--paper-alt);
+    border-radius: 8px;
+    padding: 1.1rem 1.2rem;
+    text-align: center;
+}
 .benefits-grid .benefit svg { color: var(--slate); }
-.benefits-grid .benefit h6 { margin: 0.5rem 0 0 0; font-size: 0.85rem; font-weight: 600; color: var(--text); }
-.benefits-grid .benefit p { margin: 0.2rem 0 0 0; font-size: 0.78rem; color: var(--text-soft); }
+.benefits-grid .benefit h6 {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+}
+.benefits-grid .benefit p {
+    margin: 0.2rem 0 0 0;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+}
 
 @media (max-width: 600px) {
     .benefits-grid { grid-template-columns: 1fr; }
@@ -284,7 +306,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# BENEFICIOS (iconos SVG grises, sin emoji ni stack técnico)
+# BENEFICIOS (iconos SVG)
 # ============================================================
 ICON_SCORE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>'
 ICON_PANEL = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path></svg>'
@@ -311,7 +333,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# PROBLEMA / SOLUCIÓN — formato ledger
+# PROBLEMA / SOLUCIÓN
 # ============================================================
 st.markdown('<p class="section-label">La situación</p>', unsafe_allow_html=True)
 st.markdown("""
@@ -338,20 +360,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# QUIÉN ESTÁ DETRÁS
+# QUIÉN ESTÁ DETRÁS (VERSIÓN CORREGIDA SIN AVATAR_B64)
 # ============================================================
 st.markdown('<p class="section-label">Quién está detrás de TivoScore</p>', unsafe_allow_html=True)
 
-_avatar_style = (
-    f"background-image:url('data:image/png;base64,{AVATAR_B64}');background-size:cover;background-position:center;"
-    if AVATAR_B64 else "background: #D9D2BE;"
-)
-_avatar_content = "" if AVATAR_B64 else "[Foto]"
-
-st.markdown(f"""
+st.markdown("""
 <div style="display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2.4rem; background: var(--paper-alt); border-radius: 10px; padding: 1.4rem 1.6rem;">
-    <div style="width: 64px; height: 64px; border-radius: 50%; {_avatar_style} flex-shrink: 0; display:flex; align-items:center; justify-content:center; font-family:'Roboto Slab',serif; font-size:1.1rem; color:#5B6472; overflow:hidden;">
-        {_avatar_content}
+    <div style="width: 64px; height: 64px; border-radius: 50%; background: #D9D2BE; flex-shrink: 0; display:flex; align-items:center; justify-content:center; font-family:'Roboto Slab',serif; font-size:1.1rem; color:#5B6472; overflow:hidden;">
+        [Foto]
     </div>
     <div>
         <p style="margin:0 0 0.3rem 0; font-weight:600; font-size:1rem; color:var(--text);">[Tu nombre]</p>
@@ -410,7 +426,7 @@ with col_b:
     st.button("Descubre tu TivoScore gratis →", use_container_width=True, icon=":material/monitoring:")
 
 # ============================================================
-# PILOTO — honestidad sobre etapa temprana
+# PILOTO
 # ============================================================
 st.markdown('<p class="section-label">Sobre este programa</p>', unsafe_allow_html=True)
 st.markdown("""
@@ -436,6 +452,7 @@ st.markdown("""
     <p>Descúbrelo en 2 minutos. En las próximas horas te escribimos con tu diagnóstico completo — sin compromiso de implementación.</p>
 </div>
 """, unsafe_allow_html=True)
+
 col_a2, col_b2, col_c2 = st.columns([1, 2, 1])
 with col_b2:
     st.button("Descubre tu TivoScore gratis →", use_container_width=True, key="cta2", icon=":material/monitoring:")
@@ -448,7 +465,7 @@ st.markdown("""
     <p style="font-size: 0.85rem; color: var(--text-soft); margin: 0 0 0.4rem 0;">
         <a href="https://www.linkedin.com/in/tu-usuario" target="_blank" style="color: var(--slate); text-decoration:none;">LinkedIn</a>
         &nbsp;·&nbsp;
-        <a href="mailto:info@tivoscore.com" style="color: var(--slate); text-decoration:none;">info@tivoscore.com</a>
+        <a href="mailto:hola@tivoscore.com" style="color: var(--slate); text-decoration:none;">hola@tivoscore.com</a>
     </p>
     <p style="font-size: 0.78rem; color: #9AA7B8; margin:0;">TivoScore · Sistema de Control Operativo</p>
     <p style="font-size: 0.7rem; color: #B0B8C4; margin: 0.2rem 0 0 0;">Diagnóstico gratuito · Implementación a la medida sobre tu propia hoja de cálculo</p>
