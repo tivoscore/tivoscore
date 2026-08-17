@@ -1,39 +1,20 @@
 import streamlit as st
-import base64
-from pathlib import Path
-from PIL import Image
+from PIL import Image  # <--- Importas la librería
 
-
-def _img_b64(path: str):
-    """Carga una imagen local como base64 para embeberla en HTML. Si no
-    existe el archivo (ej. lo olvidaste copiar junto a landing.py),
-    devuelve None y se usa un placeholder de texto en su lugar."""
-    try:
-        return base64.b64encode(Path(path).read_bytes()).decode()
-    except FileNotFoundError:
-        return None
-
-
-AVATAR_B64 = _img_b64("avatar_tivoscore.png")
-
-try:
-    _favicon = Image.open("avatar_tivoscore.png")
-except FileNotFoundError:
-    _favicon = "📊"
+# Cargar la imagen (asegúrate de que el nombre coincida)
+icono = Image.open("favicon.png")
 
 st.set_page_config(
     page_title="TivoScore — Sistema de Control Operativo",
-    page_icon=_favicon,
-    layout="centered",
+    page_icon=icono,   # <--- Aquí pones la variable, sin comillas
+    layout="centered"
 )
-
 # ============================================================
 # ESTILO GLOBAL — tipografía y paleta
 # ============================================================
 st.markdown("""
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-
 <style>
 :root {
     --ink: #16233A;
@@ -47,7 +28,6 @@ st.markdown("""
     --text: #1C1F26;
     --text-soft: #5B6472;
 }
-
 html, body, [class*="css"]  {
     font-family: 'Inter', sans-serif;
     color: var(--text);
@@ -262,7 +242,6 @@ st.markdown("""
         <strong>TivoScore (0-100)</strong> — un número que resume qué tan bajo
         control está tu negocio hoy.
     </p>
-
     <div class="score-display">
         <div>
             <span class="number">78</span>
@@ -274,7 +253,6 @@ st.markdown("""
         </div>
     </div>
     <p class="score-note">Tu TivoScore lo ves apenas terminas el formulario. El diagnóstico completo, con lo que significa y qué hacer al respecto, te lo enviamos personalmente en las próximas horas.</p>
-
     <p style="font-family:'IBM Plex Mono',monospace; font-size:0.76rem; letter-spacing:0.06em; text-transform:uppercase; color:#9AA7B8; margin: 1.8rem 0 0.6rem 0;">Así se vería tu panel una vez implementado</p>
     <div class="panel-preview">
         <div class="row"><span class="label">VENTAS DE HOY</span><span class="value">$1,240.00</span></div>
@@ -458,7 +436,6 @@ st.markdown("""
     <p>Descúbrelo en 2 minutos. En las próximas horas te escribimos con tu diagnóstico completo — sin compromiso de implementación.</p>
 </div>
 """, unsafe_allow_html=True)
-
 col_a2, col_b2, col_c2 = st.columns([1, 2, 1])
 with col_b2:
     st.button("Descubre tu TivoScore gratis →", use_container_width=True, key="cta2", icon=":material/monitoring:")
@@ -471,10 +448,9 @@ st.markdown("""
     <p style="font-size: 0.85rem; color: var(--text-soft); margin: 0 0 0.4rem 0;">
         <a href="https://www.linkedin.com/in/tu-usuario" target="_blank" style="color: var(--slate); text-decoration:none;">LinkedIn</a>
         &nbsp;·&nbsp;
-        <a href="mailto:hola@tivoscore.com" style="color: var(--slate); text-decoration:none;">hola@tivoscore.com</a>
+        <a href="mailto:info@tivoscore.com" style="color: var(--slate); text-decoration:none;">info@tivoscore.com</a>
     </p>
     <p style="font-size: 0.78rem; color: #9AA7B8; margin:0;">TivoScore · Sistema de Control Operativo</p>
+    <p style="font-size: 0.7rem; color: #B0B8C4; margin: 0.2rem 0 0 0;">Diagnóstico gratuito · Implementación a la medida sobre tu propia hoja de cálculo</p>
 </div>
 """, unsafe_allow_html=True)
-
-st.caption("TivoScore · Diagnóstico gratuito · Implementación a la medida sobre tu propia hoja de cálculo")
