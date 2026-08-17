@@ -465,7 +465,7 @@ st.markdown("""
     <p style="font-size: 0.85rem; color: var(--text-soft); margin: 0 0 0.4rem 0;">
         <a href="https://www.linkedin.com/in/tu-usuario" target="_blank" style="color: var(--slate); text-decoration:none;">LinkedIn</a>
         &nbsp;·&nbsp;
-        <a href="mailto:hola@tivoscore.com" style="color: var(--slate); text-decoration:none;">hola@tivoscore.com</a>
+        <a href="mailto:info@tivoscore.com" style="color: var(--slate); text-decoration:none;">info@tivoscore.com</a>
     </p>
     <p style="font-size: 0.78rem; color: #9AA7B8; margin:0;">TivoScore · Sistema de Control Operativo</p>
     <p style="font-size: 0.7rem; color: #B0B8C4; margin: 0.2rem 0 0 0;">Diagnóstico gratuito · Implementación a la medida sobre tu propia hoja de cálculo</p>
