@@ -464,7 +464,7 @@ with col_b2:
 st.markdown("""
 <div style="text-align:center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #E4DFD0;">
     <p style="font-size: 0.85rem; color: var(--text-soft); margin: 0 0 0.4rem 0;">
-        <a href="https://www.linkedin.com/in/tu-usuario" target="_blank" style="color: var(--slate); text-decoration:none;">LinkedIn</a>
+        <a href="www.linkedin.com/in/angelagutierrez-tivoscore" target="_blank" style="color: var(--slate); text-decoration:none;">LinkedIn</a>
         &nbsp;·&nbsp;
         <a href="mailto:info@tivoscore.com" style="color: var(--slate); text-decoration:none;">info@tivoscore.com</a>
     </p>
