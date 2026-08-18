@@ -985,7 +985,7 @@ if st.session_state.autodiagnostico_enviado:
 # ============================================================
 with st.form("autodiagnostico"):
     # BLOQUE 0: Contexto mínimo
-    st.markdown('<div class="section-title">Sobre vos y tu negocio</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Sobre ti y tu negocio</div>', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
         nombre = st.text_input("Tu nombre", placeholder="Ej: Juan Pérez")
