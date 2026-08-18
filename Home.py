@@ -1,18 +1,34 @@
 import streamlit as st
+import base64
+from pathlib import Path
 from PIL import Image
 
-# ============================================================
-# CONFIGURACIÓN DE PÁGINA
-# ============================================================
-icono = Image.open("favicon.png")
+
+def _img_b64(path: str):
+    """Carga una imagen local como base64 para embeberla en HTML. Si no
+    existe el archivo (ej. lo olvidaste copiar junto a landing.py),
+    devuelve None y se usa un placeholder de texto en su lugar."""
+    try:
+        return base64.b64encode(Path(path).read_bytes()).decode()
+    except FileNotFoundError:
+        return None
+
+
+AVATAR_B64 = _img_b64("avatar_tivoscore.png")
+
+try:
+    _favicon = Image.open("avatar_tivoscore.png")
+except FileNotFoundError:
+    _favicon = "📊"
+
 st.set_page_config(
     page_title="TivoScore — Sistema de Control Operativo",
-    page_icon=icono,
+    page_icon=_favicon,
     layout="centered",
 )
 
 # ============================================================
-# ESTILOS GLOBALES
+# ESTILO GLOBAL — tipografía y paleta
 # ============================================================
 st.markdown("""
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +48,7 @@ st.markdown("""
     --text-soft: #5B6472;
 }
 
-html, body, [class*="css"] {
+html, body, [class*="css"]  {
     font-family: 'Inter', sans-serif;
     color: var(--text);
 }
@@ -77,7 +93,6 @@ h1, h2, h3, .display {
     max-width: 48ch;
     margin: 0 0 0.5rem 0;
 }
-
 /* --- score display --- */
 .score-display {
     display: flex;
@@ -104,7 +119,6 @@ h1, h2, h3, .display {
     color: #7C8AA0;
     margin-top: 0.6rem;
 }
-
 /* --- panel preview --- */
 .panel-preview {
     margin-top: 1.6rem;
@@ -133,7 +147,7 @@ h1, h2, h3, .display {
     color: #7C8AA0;
 }
 
-/* --- ledger --- */
+/* --- ledger comparativo --- */
 .ledger {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -171,7 +185,7 @@ h1, h2, h3, .display {
 .step h5 { margin: 0 0 0.25rem 0; font-size: 1rem; font-weight: 600; }
 .step p { margin: 0; font-size: 0.92rem; color: var(--text-soft); line-height: 1.5; }
 
-/* --- piloto --- */
+/* --- piloto honesto --- */
 .piloto-box {
     background: var(--paper-alt);
     border-left: 3px solid var(--amber);
@@ -183,7 +197,7 @@ h1, h2, h3, .display {
 .piloto-box ul { margin: 0.5rem 0 0 0; padding-left: 1.2rem; font-size: 0.92rem; color: var(--text-soft); }
 .piloto-box ul li { margin-bottom: 0.3rem; }
 
-/* --- cta --- */
+/* --- cta final --- */
 .cta-final {
     background: var(--ink);
     border-radius: 14px;
@@ -193,6 +207,7 @@ h1, h2, h3, .display {
 }
 .cta-final h3 { color: #F6F3EC; margin: 0 0 0.5rem 0; font-size: 1.5rem; }
 .cta-final p { color: #B9C2D0; font-size: 0.94rem; margin: 0 0 0.8rem 0; }
+.cta-final .disclaimer { font-size: 0.78rem; color: #7C8AA0; margin-top: 0.6rem; }
 
 .section-label {
     font-family: 'IBM Plex Mono', monospace;
@@ -215,31 +230,12 @@ div.stButton > button {
 }
 div.stButton > button:hover { background: var(--amber-dark) !important; color: #F6F3EC !important; }
 
-/* --- beneficios --- */
-.benefits-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    margin: 0.5rem 0 2rem 0;
-}
-.benefits-grid .benefit {
-    background: var(--paper-alt);
-    border-radius: 8px;
-    padding: 1.1rem 1.2rem;
-    text-align: center;
-}
+/* --- beneficios (icono SVG gris, no emoji) --- */
+.benefits-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 0.5rem 0 2rem 0; }
+.benefits-grid .benefit { background: var(--paper-alt); border-radius: 8px; padding: 1.1rem 1.2rem; text-align: center; }
 .benefits-grid .benefit svg { color: var(--slate); }
-.benefits-grid .benefit h6 {
-    margin: 0.5rem 0 0 0;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text);
-}
-.benefits-grid .benefit p {
-    margin: 0.2rem 0 0 0;
-    font-size: 0.78rem;
-    color: var(--text-soft);
-}
+.benefits-grid .benefit h6 { margin: 0.5rem 0 0 0; font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.benefits-grid .benefit p { margin: 0.2rem 0 0 0; font-size: 0.78rem; color: var(--text-soft); }
 
 @media (max-width: 600px) {
     .benefits-grid { grid-template-columns: 1fr; }
@@ -306,7 +302,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# BENEFICIOS (iconos SVG)
+# BENEFICIOS (iconos SVG grises, sin emoji ni stack técnico)
 # ============================================================
 ICON_SCORE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>'
 ICON_PANEL = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path></svg>'
@@ -333,7 +329,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# PROBLEMA / SOLUCIÓN
+# PROBLEMA / SOLUCIÓN — formato ledger
 # ============================================================
 st.markdown('<p class="section-label">La situación</p>', unsafe_allow_html=True)
 st.markdown("""
@@ -360,7 +356,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# QUIÉN ESTÁ DETRÁS (VERSIÓN CORREGIDA SIN AVATAR_B64)
+# QUIÉN ESTÁ DETRÁS — VERSIÓN DEFINITIVA
 # ============================================================
 st.markdown('<p class="section-label">Quién está detrás de TivoScore</p>', unsafe_allow_html=True)
 
@@ -370,11 +366,14 @@ st.markdown("""
         [Foto]
     </div>
     <div>
-        <p style="margin:0 0 0.3rem 0; font-weight:600; font-size:1rem; color:var(--text);">[Tu nombre]</p>
+        <p style="margin:0 0 0.3rem 0; font-weight:600; font-size:1rem; color:var(--text);">Angela Gutiérrez</p>
         <p style="margin:0; font-size:0.9rem; color:var(--text-soft); line-height:1.55;">
-            [Una frase corta y real sobre tu experiencia]. Detrás de TivoScore
-            no hay un equipo de ventas — soy yo quien revisa cada diagnóstico
-            y responde personalmente.
+            Economista, con 20 años de experiencia en control de gestión, inventarios y operaciones — en el sector público y privado. 
+            He visto de cerca cómo los negocios se desgastan por no tener visibilidad de sus números, y cómo ese desgaste se convierte en pérdida de dinero, tiempo y tranquilidad.
+            <br><br>
+            Por eso creé TivoScore. Un sistema que detecta tus puntos de quiebre antes de que se conviertan en problemas.
+            <br><br>
+            Detrás de TivoScore hay un equipo de colaboradores que me ayuda a mantener el sistema, pero <strong>cada diagnóstico lo reviso yo personalmente</strong> y respondo con lo que veo, sin filtros ni guiones.
         </p>
     </div>
 </div>
@@ -423,10 +422,11 @@ st.markdown("""
 st.write("")
 col_a, col_b, col_c = st.columns([1, 2, 1])
 with col_b:
-    st.button("Descubre tu TivoScore gratis →", use_container_width=True, icon=":material/monitoring:")
+    if st.button("Descubre tu TivoScore gratis →", use_container_width=True, icon=":material/monitoring:"):
+        st.switch_page("pages/1_Cómo_manejas_tu_negocio.py")
 
 # ============================================================
-# PILOTO
+# PILOTO — honestidad sobre etapa temprana
 # ============================================================
 st.markdown('<p class="section-label">Sobre este programa</p>', unsafe_allow_html=True)
 st.markdown("""
@@ -455,7 +455,8 @@ st.markdown("""
 
 col_a2, col_b2, col_c2 = st.columns([1, 2, 1])
 with col_b2:
-    st.button("Descubre tu TivoScore gratis →", use_container_width=True, key="cta2", icon=":material/monitoring:")
+    if st.button("Descubre tu TivoScore gratis →", use_container_width=True, key="cta2", icon=":material/monitoring:"):
+        st.switch_page("pages/1_Cómo_manejas_tu_negocio.py")
 
 # ============================================================
 # PIE DE PÁGINA
