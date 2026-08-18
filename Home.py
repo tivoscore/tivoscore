@@ -456,7 +456,7 @@ st.markdown("""
 col_a2, col_b2, col_c2 = st.columns([1, 2, 1])
 with col_b2:
     if st.button("Descubre tu TivoScore gratis →", use_container_width=True, key="cta2", icon=":material/monitoring:"):
-        st.switch_page("pages/1_Cómo_manejas_tu_negocio.py")
+        st.switch_page("1_Cómo_manejas_tu_negocio.py")
 
 # ============================================================
 # PIE DE PÁGINA
