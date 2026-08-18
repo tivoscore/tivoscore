@@ -16,6 +16,7 @@ Flujo:
 import datetime as dt
 import hashlib
 import re
+import base64  # <--- AGREGAR ESTA LÍNEA
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -23,20 +24,13 @@ import gspread
 import streamlit as st
 from fpdf import FPDF
 from google.oauth2.service_account import Credentials
+from PIL import Image
 
 # ============================================================
 # CONFIGURACIÓN GENERAL
 # ============================================================
-import streamlit as st
-import base64
-from pathlib import Path
-from PIL import Image
-
-
 def _img_b64(path: str):
-    """Carga una imagen local como base64 para embeberla en HTML. Si no
-    existe el archivo (ej. lo olvidaste copiar junto a landing.py),
-    devuelve None y se usa un placeholder de texto en su lugar."""
+    """Carga una imagen local como base64 para embeberla en HTML."""
     try:
         return base64.b64encode(Path(path).read_bytes()).decode()
     except FileNotFoundError:
@@ -427,7 +421,14 @@ PLANTILLAS_MENSAJE = {
         "Esto es más común de lo que parece, y casi siempre significa dinero que existe pero que no se está viendo ni cobrando a tiempo.\n\n"
         "{texto_costo}"
         "{nota_dependencia}"
-        "Te dejo algo corto sobre esto: {enlace}"
+        "Te comparto un recurso práctico para empezar a ordenar tus ventas y cobros.\n"
+        "🔹 **Incluye:**\n"
+        "   - 📊 Plantilla en Google Sheets (con fórmulas y KPIs listos)\n"
+        "   - 🐍 App en Streamlit para ver tu panel de control en el navegador\n"
+        "   - 📖 Manual paso a paso para configurarlo en 30-40 minutos\n\n"
+        "Puedes descargarlo aquí:\n"
+        "{enlace}\n\n"
+        "Échale un vistazo y cualquier cosa, por aquí ando."
     ),
     "pedidos_entregas": (
         "Hola {nombre},\n\n"
@@ -435,7 +436,14 @@ PLANTILLAS_MENSAJE = {
         "Es fácil que algo se retrase o se pierda cuando no hay un registro claro.\n\n"
         "{texto_costo}"
         "{nota_dependencia}"
-        "Te dejo algo corto sobre cómo evitar esto: {enlace}"
+        "Te comparto un recurso práctico para empezar a ordenar tus ventas y cobros.\n"
+        "🔹 **Incluye:**\n"
+        "   - 📊 Plantilla en Google Sheets (con fórmulas y KPIs listos)\n"
+        "   - 🐍 App en Streamlit para ver tu panel de control en el navegador\n"
+        "   - 📖 Manual paso a paso para configurarlo en 30-40 minutos\n\n"
+        "Puedes descargarlo aquí:\n"
+        "{enlace}\n\n"
+        "Échale un vistazo y cualquier cosa, por aquí ando."
     ),
     "produccion": (
         "Hola {nombre},\n\n"
@@ -443,19 +451,29 @@ PLANTILLAS_MENSAJE = {
         "Muchos negocios producen sin saber exactamente cuánto les cuesta cada unidad.\n\n"
         "{texto_costo}"
         "{nota_dependencia}"
-        "Te dejo algo corto sobre cómo calcularlo en 3 pasos: {enlace}"
+        "Te comparto un recurso práctico para empezar a ordenar tus ventas y cobros.\n"
+        "🔹 **Incluye:**\n"
+        "   - 📊 Plantilla en Google Sheets (con fórmulas y KPIs listos)\n"
+        "   - 🐍 App en Streamlit para ver tu panel de control en el navegador\n"
+        "   - 📖 Manual paso a paso para configurarlo en 30-40 minutos\n\n"
+        "Puedes descargarlo aquí:\n"
+        "{enlace}\n\n"
+        "Échale un vistazo y cualquier cosa, por aquí ando."
     ),
     "procesos": (
-       "Hola {nombre},\n\n"
-"Según tus respuestas, tu punto de atención principal hoy está en el control de ventas y cobros. "
-"No siempre es fácil saber cuánto vendiste ayer ni cuánto te deben en total. "
-"Esto es más común de lo que parece, y casi siempre significa dinero que existe pero que no se está viendo ni cobrando a tiempo.\n\n"
-"{texto_costo}"
-"{nota_dependencia}"
-"Te comparto un recurso práctico para empezar a ordenar tus ventas y cobros. "
-"Incluye una plantilla en Google Sheets y un manual paso a paso.\n"
-"Puedes descargarlo aquí: \n"
-f"{https://drive.google.com/uc?export=download&id=1usoXcSFDTpb29AG8BktQImkyvOmT87Dx}\n\n"
+        "Hola {nombre},\n\n"
+        "Según tus respuestas, tu punto de atención principal hoy está en que el negocio depende demasiado de ti. "
+        "Si faltas un día, no todo sigue funcionando igual.\n\n"
+        "{texto_costo}"
+        "{nota_dependencia}"
+        "Te comparto un recurso práctico para empezar a ordenar tus ventas y cobros.\n"
+        "🔹 **Incluye:**\n"
+        "   - 📊 Plantilla en Google Sheets (con fórmulas y KPIs listos)\n"
+        "   - 🐍 App en Streamlit para ver tu panel de control en el navegador\n"
+        "   - 📖 Manual paso a paso para configurarlo en 30-40 minutos\n\n"
+        "Puedes descargarlo aquí:\n"
+        "{enlace}\n\n"
+        "Échale un vistazo y cualquier cosa, por aquí ando."
     ),
 }
 
@@ -470,19 +488,19 @@ def obtener_mensaje(perfil: str, nombre: str, nivel_dependencia: str, tiempo_adm
     if costo_admin_mes > 0:
         texto_costo = (
             f"Según tus respuestas, estás dedicando el {tiempo_administrativo}% de tu tiempo a tareas administrativas, "
-            f"lo que equivale a {costo_admin_mes:,.0f} al mes que podrías estar dedicando a hacer negocio.\n\n"
+            f"lo que equivale a ${costo_admin_mes:,.0f} USD al mes que podrías estar dedicando a hacer negocio.\n\n"
         )
     else:
         texto_costo = ""
 
     plantilla = PLANTILLAS_MENSAJE.get(perfil, PLANTILLAS_MENSAJE["procesos"])
-    enlace = st.secrets.get(f"recurso_{perfil}", "[ENLACE AL RECURSO — pendiente de configurar]")
+    enlace = "https://drive.google.com/uc?export=download&id=1usoXcSFDTpb29AG8BktQImkyvOmT87Dx"
 
     return plantilla.format(
         nombre=nombre.split()[0] if nombre else "emprendedor",
         texto_costo=texto_costo,
         nota_dependencia=notas.get(nivel_dependencia, ""),
-        enlace=https://drive.google.com/uc?export=download&id=1usoXcSFDTpb29AG8BktQImkyvOmT87Dx,
+        enlace=enlace,
     )
 
 
